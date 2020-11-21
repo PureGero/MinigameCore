@@ -167,5 +167,19 @@ public class Game {
             p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation().add(Math.random(), 0, Math.random()));
         }
         MG.core().games.remove(this);
+
+        Bukkit.getScheduler().runTaskAsynchronously(MG.core(), () -> {
+            Bukkit.unloadWorld(world, false);
+            deleteFiles(new File(worldName));
+        });
+    }
+
+    public static void deleteFiles(File file) {
+        if (file.isDirectory()) {
+            for (File f : file.listFiles()) {
+                deleteFiles(f);
+            }
+        }
+        file.delete();
     }
 }

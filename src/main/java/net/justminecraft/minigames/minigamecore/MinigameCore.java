@@ -116,7 +116,14 @@ public class MinigameCore extends JavaPlugin {
     }
 
     public void registerMinigame(Minigame mg) {
+        for (File file : new File(".").listFiles()) {
+            if (file.getName().startsWith(mg.getMinigameName() + "-") && new File(file, "level.dat").isFile()) {
+                Game.deleteFiles(file);
+            }
+        }
+
         minigames.add(mg);
+        new Game(mg);
     }
 
     public void joinMinigameQueue(Player p, String mg) {
