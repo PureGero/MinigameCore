@@ -123,7 +123,7 @@ public class MinigameCore extends JavaPlugin {
         }
 
         minigames.add(mg);
-        new Game(mg);
+        mg.newGame();
     }
 
     public void joinMinigameQueue(Player p, String mg) {

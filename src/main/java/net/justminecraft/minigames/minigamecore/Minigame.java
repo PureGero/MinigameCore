@@ -18,6 +18,11 @@ public abstract class Minigame extends JavaPlugin {
     /**
      * Generate a world for a game
      */
+    public abstract Game newGame();
+
+    /**
+     * Generate a world for a game
+     */
     public abstract void generateWorld(Game game, WorldBuffer buffer);
 
     /**

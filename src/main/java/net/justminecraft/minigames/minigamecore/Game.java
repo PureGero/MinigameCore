@@ -47,7 +47,7 @@ public class Game {
         MG.core().queues.remove(this);
         MG.core().games.add(this);
 
-        new Game(minigame);
+        minigame.newGame();
 
         ArrayList<String> donars = new ArrayList<>();
         for (Player p : players) {
