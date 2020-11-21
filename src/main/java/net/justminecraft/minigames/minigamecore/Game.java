@@ -35,8 +35,6 @@ public class Game {
             mg.generateWorld(this, buffer);
             buffer.save();
 
-            world = Bukkit.createWorld(new WorldCreator(worldName).type(WorldType.FLAT).generatorSettings("2;0;1;"));
-
             generated = true;
         });
 
@@ -48,6 +46,8 @@ public class Game {
         MG.core().games.add(this);
 
         minigame.newGame();
+
+        world = Bukkit.createWorld(new WorldCreator(worldName).type(WorldType.FLAT).generatorSettings("2;0;1;"));
 
         ArrayList<String> donars = new ArrayList<>();
         for (Player p : players) {
@@ -125,13 +125,8 @@ public class Game {
         players.remove(p);
         postPlayerLeave(p);
         MG.resetPlayer(p);
-        p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation().add(Math.random(), 0, Math.random()));
-		/*Bukkit.getScheduler().scheduleSyncDelayedTask(MG.core(), new Runnable(){
-			public void run(){
-				MG.resetPlayer(p);
-				p.teleport(getCenter().getWorld().getSpawnLocation());
-			}
-		},1);*/
+        p.setGameMode(GameMode.SPECTATOR);
+        p.teleport(players.get(0));
     }
 
     public void onPlayerDeath(Player p) {
@@ -159,19 +154,20 @@ public class Game {
 
     public final void finishGame() {
         while (players.size() > 0) {
-            Player p = players.get(0);
-            players.remove(0);
+            Player p = players.remove(0);
             PlayerData.get(p.getUniqueId()).incrementStat("wins");
             PlayerData.get(p.getUniqueId()).incrementStat(minigame.getMinigameName(), "wins");
-            MG.resetPlayer(p);
-            p.teleport(Bukkit.getWorlds().get(0).getSpawnLocation().add(Math.random(), 0, Math.random()));
         }
         MG.core().games.remove(this);
 
-        Bukkit.getScheduler().runTaskAsynchronously(MG.core(), () -> {
-            Bukkit.unloadWorld(world, false);
-            deleteFiles(new File(worldName));
-        });
+        for (Player player : world.getPlayers()) {
+            MG.resetPlayer(player);
+            player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation().add(Math.random(), 0, Math.random()));
+        }
+
+        MG.core().getLogger().info("Unloading world " + world.getName() + " in 30 seconds...");
+        Bukkit.getScheduler().runTaskLater(MG.core(), () -> Bukkit.unloadWorld(world, false), 30*20L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(MG.core(), () -> deleteFiles(new File(worldName)), 60*20L);
     }
 
     public static void deleteFiles(File file) {

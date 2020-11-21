@@ -1,14 +1,12 @@
 package net.justminecraft.minigames.minigamecore.worldbuffer;
 
 import com.sk89q.jnbt.*;
+import net.minecraft.server.v1_8_R3.NBTCompressedStreamTools;
 import net.minecraft.server.v1_8_R3.RegionFileCache;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -155,8 +153,8 @@ public class WorldBuffer {
     public void save() {
         for (int i = 0; i < chunks.size(); i++) {
             Chunk c = chunks.get(i);
-            try (DataOutputStream out = RegionFileCache.d(new File(worldFolder, "region"), c.x, c.y)) {
-                out.write(c.compileOutput());
+            try (DataOutputStream out = RegionFileCache.d(worldFolder, c.x, c.y)) {
+                NBTCompressedStreamTools.a(c.compile(), (DataOutput) out);
             } catch (IOException e) {
                 e.printStackTrace();
             }

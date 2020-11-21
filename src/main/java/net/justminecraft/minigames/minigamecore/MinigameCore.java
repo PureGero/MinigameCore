@@ -20,7 +20,7 @@ public class MinigameCore extends JavaPlugin {
     public ArrayList<Game> queues = new ArrayList<>();
     ArrayList<Game> games = new ArrayList<>();
     Runnable queueTicker = () -> {
-        for (Game g : queues) {
+        for (Game g : queues.toArray(new Game[0])) {
             if (g.players.size() < g.minigame.getMinPlayers())
                 g.queueStart = 0;
             if (g.players.size() >= g.minigame.getMaxPlayers() || (g.queueStart > 0 && (60 - (System.currentTimeMillis() - g.queueStart) / 1000) < 1))
@@ -38,15 +38,15 @@ public class MinigameCore extends JavaPlugin {
         }
 
         // AFK Ticker
-        for (Game g : games) {
+        for (Game g : games.toArray(new Game[0])) {
             for (Player p : g.players.toArray(new Player[0])) {
                 Long l = g.afkTimer.get(p.getUniqueId());
-                if (l != null && l < System.currentTimeMillis() - 60000) {
+                if (l != null && l < System.currentTimeMillis() - 300000) {
                     PlayerData.get(p.getUniqueId()).incrementStat("afk_kicks");
                     PlayerData.get(p.getUniqueId()).incrementStat(g.minigame.getMinigameName(), "afk_kicks");
                     g.playerLeave(p);
                     p.sendMessage(ChatColor.YELLOW + "You have been kicked from the game for inactivity");
-                } else if (l != null && l < System.currentTimeMillis() - 45000) {
+                } else if (l != null && l < System.currentTimeMillis() - 270000) {
                     p.sendMessage(ChatColor.YELLOW + "If you do not move soon you will be kicked from the game for inactivity");
                 }
             }
@@ -117,7 +117,7 @@ public class MinigameCore extends JavaPlugin {
 
     public void registerMinigame(Minigame mg) {
         for (File file : new File(".").listFiles()) {
-            if (file.getName().startsWith(mg.getMinigameName() + "-") && new File(file, "level.dat").isFile()) {
+            if (file.getName().startsWith(mg.getMinigameName() + "-")) {
                 Game.deleteFiles(file);
             }
         }
