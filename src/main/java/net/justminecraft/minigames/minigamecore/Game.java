@@ -125,8 +125,10 @@ public class Game {
         players.remove(p);
         postPlayerLeave(p);
         MG.resetPlayer(p);
-        p.setGameMode(GameMode.SPECTATOR);
-        p.teleport(players.get(0));
+        if (players.size() > 0) {
+            p.setGameMode(GameMode.SPECTATOR);
+            p.teleport(players.get(0));
+        }
     }
 
     public void onPlayerDeath(Player p) {
