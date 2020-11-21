@@ -1,0 +1,40 @@
+name: ${project.name}
+version: ${project.version}
+description: ${project.description}
+main: net.justminecraft.minigames.minigamecore.MinigameCore
+author: PureGero
+commands:
+  minigame:
+    description: Minigame commands
+    aliases: mg
+    permission: minigame
+  join:
+    description: Join a minigame queue
+    aliases: jn
+    permission: minigame
+  leave:
+    description: Leave a minigame queue
+    aliases: lv
+    permission: minigame
+  forcestart:
+    description: Force a minigame to start
+    permission: minigame.forcestart
+  money:
+    description: See how much money you have
+    aliases: [balance,coins,bal,bank]
+    permission: money
+  stats:
+    description: Look at your stats!
+permissions:
+  money:
+    default: true
+  minigame:
+    default: true
+  minigame.doublecoins:
+    default: false
+  minigame.triplecoins:
+    default: false
+  minigame.quadruplecoins:
+    default: false
+  minigame.forcestart:
+    default: op
