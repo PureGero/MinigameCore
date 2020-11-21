@@ -7,7 +7,7 @@
     <groupId>net.justminecraft.minigames</groupId>
     <artifactId>MinigameCore</artifactId>
     <version>1.0.0</version>
-    <description></description>
+    <description>Core plugin for a minigame network</description>
     
     <name>MinigameCore</name>
     
