@@ -122,7 +122,7 @@ public class MinigameCore extends JavaPlugin {
                     MG.resetPlayer(player);
                     player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation().add(0.5, 0, 0.5));
                 }
-                
+
                 Bukkit.unloadWorld(world, false);
             }
         }
@@ -276,7 +276,6 @@ public class MinigameCore extends JavaPlugin {
                 }
             } else {
                 sender.sendMessage(ChatColor.RED + "Usage: /" + label + " <player>");
-                listMinigames(sender);
             }
 
             return true;
