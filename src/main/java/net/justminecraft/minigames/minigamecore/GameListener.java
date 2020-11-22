@@ -2,6 +2,7 @@ package net.justminecraft.minigames.minigamecore;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -71,10 +72,16 @@ public class GameListener implements Listener {
             player.setItemInHand(item.getAmount() > 0 ? item : null);
 
             int food = player.getFoodLevel() + Food.getHungerRegenValue(item.getType());
-            if (food > 20) food = 20;
 
-            player.setFoodLevel(food);
-            player.setSaturation((float) (player.getSaturation() + Food.getSaturationValue(item.getType())));
+            Bukkit.getScheduler().runTask(MG.core(), () -> {
+                int f = food;
+                if (f < 0) f = 0;
+                if (f > 20) f = 20;
+                player.setFoodLevel(f);
+                player.setSaturation((float) (player.getSaturation() + Food.getSaturationValue(item.getType())));
+
+                player.getWorld().playSound(player.getLocation(), Sound.BURP, 1, 1);
+            });
 
             e.setCancelled(true);
         }
