@@ -70,7 +70,10 @@ public class GameListener implements Listener {
             item.setAmount(item.getAmount() - 1);
             player.setItemInHand(item.getAmount() > 0 ? item : null);
 
-            player.setFoodLevel(player.getFoodLevel() + Food.getHungerRegenValue(item.getType()));
+            int food = player.getFoodLevel() + Food.getHungerRegenValue(item.getType());
+            if (food > 20) food = 20;
+
+            player.setFoodLevel(food);
             player.setSaturation((float) (player.getSaturation() + Food.getSaturationValue(item.getType())));
 
             e.setCancelled(true);
