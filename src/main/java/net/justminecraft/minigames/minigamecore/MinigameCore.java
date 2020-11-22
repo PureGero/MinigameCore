@@ -244,6 +244,33 @@ public class MinigameCore extends JavaPlugin {
             leaveMinigameQueue((Player) sender);
             return true;
         }
+
+        if (cmd.getName().equalsIgnoreCase("spectate")) {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage(ChatColor.RED + "You must be a player to do that!");
+                return true;
+            }
+
+            if (args.length > 0) {
+                Player player = Bukkit.getPlayer(args[0]);
+                if (player == null) {
+                    sender.sendMessage(ChatColor.RED + "Could not find player " + args[0]);
+                } else if (MG.core().getGame((Player) sender) != null) {
+                    sender.sendMessage(ChatColor.RED + "You are currently in a minigame");
+                } else if (MG.core().getGame(player) == null) {
+                    sender.sendMessage(ChatColor.RED + player.getName() + " is not in a minigame");
+                } else {
+                    ((Player) sender).setGameMode(GameMode.SPECTATOR);
+                    ((Player) sender).teleport(player);
+                }
+            } else {
+                sender.sendMessage(ChatColor.RED + "Usage: /" + label + " <player>");
+                listMinigames(sender);
+            }
+
+            return true;
+        }
+
         if (cmd.getName().equalsIgnoreCase("forcestart")) {
             if (!(sender instanceof Player)) {
                 sender.sendMessage(ChatColor.RED + "You must be a player to do that!");

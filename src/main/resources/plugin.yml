@@ -25,10 +25,15 @@ commands:
     permission: money
   stats:
     description: Look at your stats!
+  spectate:
+    description: Spectate someone in a minigame
+    permission: minigame.spectate
 permissions:
   money:
     default: true
   minigame:
+    default: true
+  minigame.spectate:
     default: true
   minigame.doublecoins:
     default: false
