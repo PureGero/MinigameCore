@@ -6,6 +6,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -67,7 +68,8 @@ public class GameListener implements Listener {
         Player player = e.getPlayer();
         ItemStack item = e.getItem();
 
-        if (item != null && Food.getHungerRegenValue(item.getType()) != 0 && player.getFoodLevel() < 20) {
+        if (item != null && Food.getHungerRegenValue(item.getType()) != 0 && player.getFoodLevel() < 20 &&
+                (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.RIGHT_CLICK_AIR)) {
             int food = player.getFoodLevel() + Food.getHungerRegenValue(item.getType());
 
             item.setAmount(item.getAmount() - 1);
