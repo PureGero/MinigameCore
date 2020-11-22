@@ -68,10 +68,10 @@ public class GameListener implements Listener {
         ItemStack item = e.getItem();
 
         if (item != null && Food.getHungerRegenValue(item.getType()) != 0 && player.getFoodLevel() < 20) {
+            int food = player.getFoodLevel() + Food.getHungerRegenValue(item.getType());
+
             item.setAmount(item.getAmount() - 1);
             player.setItemInHand(item.getAmount() > 0 ? item : null);
-
-            int food = player.getFoodLevel() + Food.getHungerRegenValue(item.getType());
 
             Bukkit.getScheduler().runTask(MG.core(), () -> {
                 int f = food;
