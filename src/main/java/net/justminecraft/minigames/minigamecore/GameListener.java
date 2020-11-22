@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
 
 public class GameListener implements Listener {
     MinigameCore core;
@@ -57,6 +58,22 @@ public class GameListener implements Listener {
                 //p.setHealth(0);
                 core.getGame(p).onPlayerDeath(p);
             }
+        }
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent e) {
+        Player player = e.getPlayer();
+        ItemStack item = e.getItem();
+
+        if (item != null && Food.getHungerRegenValue(item.getType()) != 0 && player.getFoodLevel() < 20) {
+            item.setAmount(item.getAmount() - 1);
+            player.setItemInHand(item.getAmount() > 0 ? item : null);
+
+            player.setFoodLevel(player.getFoodLevel() + Food.getHungerRegenValue(item.getType()));
+            player.setSaturation((float) (player.getSaturation() + Food.getSaturationValue(item.getType())));
+
+            e.setCancelled(true);
         }
     }
 
