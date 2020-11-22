@@ -1,5 +1,6 @@
 package net.justminecraft.minigames.minigamecore;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,10 +12,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.*;
 
 public class GameListener implements Listener {
     MinigameCore core;
@@ -52,7 +50,9 @@ public class GameListener implements Listener {
     public void onPlayerDamage(EntityDamageEvent e) {
         if (e.getEntity() instanceof Player) {
             Player p = (Player) e.getEntity();
-            if (core.getGame(p) != null && e.getCause() == DamageCause.VOID) {
+            if (core.getGame(p) == null) {
+                e.setDamage(0);
+            } else if (e.getCause() == DamageCause.VOID) {
                 e.setCancelled(true);
                 //p.setHealth(0);
                 core.getGame(p).onPlayerDeath(p);
@@ -127,5 +127,11 @@ public class GameListener implements Listener {
         Game g = core.getGame(e.getPlayer());
         if (g != null)
             g.afkTimer.put(e.getPlayer().getUniqueId(), System.currentTimeMillis());
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        MG.resetPlayer(e.getPlayer());
+        e.getPlayer().teleport(Bukkit.getWorlds().get(0).getSpawnLocation().add(Math.random(), 0, Math.random()));
     }
 }
