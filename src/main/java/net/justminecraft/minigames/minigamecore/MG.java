@@ -16,6 +16,7 @@ public class MG {
             p.removePotionEffect(e.getType());
         p.setHealth(20);
         p.getInventory().clear();
+        p.getEquipment().clear();
         p.setAllowFlight(false);
         p.setPlayerTime(0, true);
         p.setSaturation(20);
