@@ -116,6 +116,17 @@ public class MinigameCore extends JavaPlugin {
     }
 
     public void registerMinigame(Minigame mg) {
+        for (World world : Bukkit.getWorlds()) {
+            if (world.getName().startsWith(mg.getMinigameName() + "-")) {
+                for (Player player : world.getPlayers()) {
+                    MG.resetPlayer(player);
+                    player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation().add(0.5, 0, 0.5));
+                }
+                
+                Bukkit.unloadWorld(world, false);
+            }
+        }
+
         for (File file : new File(".").listFiles()) {
             if (file.getName().startsWith(mg.getMinigameName() + "-")) {
                 Game.deleteFiles(file);
