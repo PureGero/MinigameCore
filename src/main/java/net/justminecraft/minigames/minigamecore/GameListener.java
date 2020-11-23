@@ -123,7 +123,7 @@ public class GameListener implements Listener {
     public void onFoodLevelChange(FoodLevelChangeEvent e) {
         if (e.getEntity() instanceof Player) {
             Game g = core.getGame((Player) e.getEntity());
-            if (g != null && g.disableHunger)
+            if (g == null || g.disableHunger)
                 e.setFoodLevel(20);
         }
     }
