@@ -96,6 +96,7 @@ public class Game {
     public void giveMoney(Player p, int money) {
         if (money > 0) {
             PlayerData.get(p.getUniqueId()).money += money * coinMultiplier;
+            TopCoins.updateCoins(PlayerData.get(p.getUniqueId()));
             p.sendMessage(ChatColor.GOLD + "+" + money * coinMultiplier + " coins");
             PlayerData d = PlayerData.get(p.getUniqueId());
             d.setStat(d.getStat("coins_earnt") + money * coinMultiplier, "coins_earnt");

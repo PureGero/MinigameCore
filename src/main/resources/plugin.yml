@@ -28,6 +28,8 @@ commands:
   spectate:
     description: Spectate someone in a minigame
     permission: minigame.spectate
+  topcoins:
+    description: List the players with the most coins
 permissions:
   money:
     default: true

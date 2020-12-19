@@ -189,6 +189,8 @@ public class MinigameCore extends JavaPlugin {
         //getServer().getPluginManager().registerEvents(logger, this);
         //getServer().getScheduler().scheduleSyncRepeatingTask(this, logger, 20L, 20L);
         //getServer().getPluginManager().registerEvents(new AntiCheat(), this);
+        TopCoins.load(getDataFolder());
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> TopCoins.save(getDataFolder()), 15 * 60 * 20, 15 * 60 * 20);
 
         getLogger().info("MinigameCore is enabled!");
     }
@@ -200,6 +202,7 @@ public class MinigameCore extends JavaPlugin {
             uuids.add(u);
         for (UUID u : uuids)
             PlayerData.save(u);
+        TopCoins.save(getDataFolder());
         getLogger().info("MinigameCore is disabled!");
     }
 
@@ -340,6 +343,9 @@ public class MinigameCore extends JavaPlugin {
                 p.sendMessage("Invalid minigame! (or maybe you've never played it?)");
             }
             return true;
+        }
+        if (cmd.getName().equals("topcoins")) {
+            return TopCoins.command(sender, label, args);
         }
         return false;
     }

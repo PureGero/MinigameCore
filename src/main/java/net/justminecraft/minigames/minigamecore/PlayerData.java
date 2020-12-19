@@ -34,7 +34,7 @@ public class PlayerData {
             return cache.get(uuid);
         PlayerData p = new PlayerData();
         p.uuid = uuid;
-        File out = new File(dir, uuid.toString().substring(0, 2) + "/" + uuid.toString().substring(2) + ".json");
+        File out = new File(dir, uuid + ".json");
         if (out.isFile()) {
             try {
                 FileReader r = new FileReader(out);
@@ -73,7 +73,7 @@ public class PlayerData {
         PlayerData p = cache.get(uuid);
         if (p == null) return;
         cache.remove(uuid);
-        File out = new File(dir, uuid.toString().substring(0, 2) + "/" + uuid.toString().substring(2) + ".json");
+        File out = new File(dir, uuid + ".json");
         if (!out.getParentFile().isDirectory())
             out.getParentFile().mkdirs();
         JSONObject o = new JSONObject();
