@@ -31,31 +31,31 @@ public class Chunk {
     }
 
     public int getBlockId(int x, int y, int z) {
-        Section s = sections[y / 16];
+        Section s = sections[y >> 4];
         if (s == null) return 0;
         else return s.id(x, y & 15, z);
     }
 
     public byte getBlockData(int x, int y, int z) {
-        Section s = sections[y / 16];
+        Section s = sections[y >> 4];
         if (s == null) return 0;
         else return s.dat(x, y & 15, z);
     }
 
     public void setBlockId(int x, int y, int z, int id) {
-        Section s = sections[y / 16];
+        Section s = sections[y >> 4];
         if (s == null) {
-            s = new Section(y / 16, this);
-            sections[y / 16] = s;
+            s = new Section(y >> 4, this);
+            sections[y >> 4] = s;
         }
         s.id(x, y & 15, z, (byte) id);
     }
 
     public void setBlockIdAndData(int x, int y, int z, int id, int data) {
-        Section s = sections[y / 16];
+        Section s = sections[y >> 4];
         if (s == null) {
-            s = new Section(y / 16, this);
-            sections[y / 16] = s;
+            s = new Section(y >> 4, this);
+            sections[y >> 4] = s;
         }
         s.id(x, y & 15, z, (byte) id);
         s.dat(x, y & 15, z, (byte) data);

@@ -74,14 +74,14 @@ public class WorldBuffer {
     }
 
     public void setBlockAt(int x, int y, int z, int id) {
-        Chunk c = getChunkAt(x / 16, z / 16);
-        if (c == null) c = new Chunk(x / 16, z / 16, this);
+        Chunk c = getChunkAt(x >> 4, z >> 4);
+        if (c == null) c = new Chunk(x >> 4, z >> 4, this);
         c.setBlockId(x & 15, y, z & 15, id);
     }
 
     public void setBlockAt(int x, int y, int z, int id, byte dat) {
-        Chunk c = getChunkAt(x / 16, z / 16);
-        if (c == null) c = new Chunk(x / 16, z / 16, this);
+        Chunk c = getChunkAt(x >> 4, z >> 4);
+        if (c == null) c = new Chunk(x >> 4, z >> 4, this);
         c.setBlockIdAndData(x & 15, y, z & 15, id, dat);
     }
 
@@ -89,7 +89,7 @@ public class WorldBuffer {
      * @return The block id of the block at {@code x,y,z}
      */
     public int getBlockAt(int x, int y, int z) {
-        Chunk c = getChunkAt(x / 16, z / 16);
+        Chunk c = getChunkAt(x >> 4, z >> 4);
         if (c == null) return 0;
         return c.getBlockId(x & 15, y, z & 15);
     }
