@@ -20,6 +20,7 @@ public class Game {
     public int moneyPerDeath = 2;
     public int moneyPerWin = 10;
     public int coinMultiplier = 0;
+    public boolean generating = false;
     public boolean generated = false;
     public boolean reg = false;
     public String worldName;
@@ -27,25 +28,49 @@ public class Game {
     public long queueStart = 0;
 
     public Game(Minigame mg) {
+        this(mg, true);
+    }
+
+    public Game(Minigame mg, boolean generate) {
         minigame = mg;
         worldName = mg.getMinigameName() + "-" + Double.toString(Math.random()).substring(2);
 
-        Bukkit.getScheduler().runTaskAsynchronously(MinigameCore.core(), () -> {
-            WorldBuffer buffer = new WorldBuffer(new File(worldName));
-            mg.generateWorld(this, buffer);
-            buffer.save();
-
-            generated = true;
-        });
+        if (generate) {
+            generateWorld(null);
+        }
 
         MG.core().queues.add(this);
     }
 
-    public void startGame() {
-        MG.core().queues.remove(this);
-        MG.core().games.add(this);
+    public void generateWorld(Runnable callback) {
+        generating = true;
 
-        minigame.newGame();
+        Bukkit.getScheduler().runTaskAsynchronously(MinigameCore.core(), () -> {
+            WorldBuffer buffer = new WorldBuffer(new File(worldName));
+            minigame.generateWorld(this, buffer);
+            buffer.save();
+
+            generated = true;
+
+            if (callback != null) {
+                callback.run();
+            }
+        });
+    }
+
+    public void startGame() {
+        if (MG.core().queues.remove(this)) {
+            MG.core().games.add(this);
+
+            minigame.newGame();
+        }
+
+        if (!generating) {
+            // Generate the world
+            players.forEach(player -> minigame.message(player, "Preparing " + minigame.getMinigameName() + " game..."));
+            generateWorld(this::startGame);
+            return;
+        }
 
         world = Bukkit.createWorld(new WorldCreator(worldName).type(WorldType.FLAT).generatorSettings("2;0;1;"));
 
