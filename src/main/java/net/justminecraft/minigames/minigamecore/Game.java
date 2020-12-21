@@ -53,7 +53,7 @@ public class Game {
             generated = true;
 
             if (callback != null) {
-                callback.run();
+                Bukkit.getScheduler().runTask(MG.core(), callback);
             }
         });
     }
