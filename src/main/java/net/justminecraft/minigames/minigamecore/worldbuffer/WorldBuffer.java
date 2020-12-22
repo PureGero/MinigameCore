@@ -70,7 +70,11 @@ public class WorldBuffer {
     }
 
     public void setBlockAt(Location l, Material m) {
-        setBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ(), m.getId());
+        setBlockAt(l, m, (byte) 0);
+    }
+
+    public void setBlockAt(Location l, Material m, byte dat) {
+        setBlockAt(l.getBlockX(), l.getBlockY(), l.getBlockZ(), m.getId(), dat);
     }
 
     public void setBlockAt(int x, int y, int z, int id) {
