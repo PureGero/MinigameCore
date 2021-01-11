@@ -105,6 +105,15 @@ public class MinigameCore extends JavaPlugin {
         return null;
     }
 
+    public Game getGame(World w) {
+        for (Game g : games) {
+            if (g.world != null && g.world.equals(w)) {
+                return g;
+            }
+        }
+        return null;
+    }
+
     public ArrayList<Game> getGames(Minigame m) {
         ArrayList<Game> g = new ArrayList<>();
         for (Game a : games) {
