@@ -19,8 +19,10 @@ public class QueueListener implements Listener {
     @EventHandler
     public void onQuit(final PlayerQuitEvent e) {
         Game q = core.getQueue(e.getPlayer());
-        if (q != null)
+        if (q != null) {
             q.players.remove(e.getPlayer());
+            Bukkit.getPluginManager().callEvent(new QueueLeaveEvent(e.getPlayer(), q.minigame));
+        }
 
         Bukkit.getScheduler().runTaskAsynchronously(core, () -> PlayerData.save(e.getPlayer().getUniqueId()));
     }
