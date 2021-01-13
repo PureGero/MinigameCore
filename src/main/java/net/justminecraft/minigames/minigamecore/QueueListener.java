@@ -6,6 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -35,9 +36,15 @@ public class QueueListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e) {
+        e.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+    }
 
-
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onWorldChange(PlayerChangedWorldEvent e) {
+        if (e.getPlayer().getWorld() == Bukkit.getWorlds().get(0)) {
+            e.getPlayer().setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+        }
     }
 }

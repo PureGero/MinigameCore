@@ -1,5 +1,6 @@
 package net.justminecraft.minigames.minigamecore;
 
+import com.connorlinfoot.titleapi.TitleAPI;
 import net.justminecraft.minigames.minigamecore.worldbuffer.WorldBuffer;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
@@ -151,7 +152,7 @@ public class Game {
         players.remove(p);
         postPlayerLeave(p);
         MG.resetPlayer(p);
-        if (players.size() > 0) {
+        if (!isGameOver()) {
             p.setGameMode(GameMode.SPECTATOR);
             p.teleport(players.get(0));
         }
@@ -165,18 +166,27 @@ public class Game {
         broadcast(p.getDisplayName() + " has died (" + (players.size() - 1) + " players left)");
     }
 
+    public String getWinningTeamName() {
+        return players.isEmpty() ? "No one" : players.get(0).getDisplayName();
+    }
+
+    public boolean isGameOver() {
+        return players.size() < 2;
+    }
+
     public void postPlayerLeave(Player p) {
         if (moneyPerDeath > 0)
             for (Player p2 : players) {
                 giveMoney(p2, moneyPerDeath);
             }
-        if (players.size() < 2) {
+        if (isGameOver()) {
             if (players.size() > 0) {
-                broadcast(players.get(0).getDisplayName() + " has won!!!");
-                if (moneyPerWin > 0)
-                    giveMoney(players.get(0), moneyPerWin);
+                broadcast(getWinningTeamName() + ChatColor.GOLD + " has won!!!");
+                if (moneyPerWin > 0) {
+                    players.forEach(player -> giveMoney(player, moneyPerWin));
+                }
             }
-            finishGame();
+            new EndGameCountdown(this);
         }
     }
 

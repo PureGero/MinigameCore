@@ -30,7 +30,6 @@ public class MG {
         p.setExhaustion(0);
         p.setLevel(0);
         p.setFallDistance(0);
-        p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         for (Player p2 : Bukkit.getOnlinePlayers()) // Remove Player.hidePlayer effects (this way removes any chance of it glitching)
             if (p != p2)
                 p.showPlayer(p2);
