@@ -152,7 +152,7 @@ public class Game {
         players.remove(p);
         postPlayerLeave(p);
         MG.resetPlayer(p);
-        if (!isGameOver()) {
+        if (!players.isEmpty()) {
             p.setGameMode(GameMode.SPECTATOR);
             p.teleport(players.get(0));
         }
