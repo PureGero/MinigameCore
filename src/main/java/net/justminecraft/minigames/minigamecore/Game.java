@@ -152,6 +152,8 @@ public class Game {
         players.remove(p);
         postPlayerLeave(p);
         MG.resetPlayer(p);
+        PlayerData.get(p.getUniqueId()).setStat(0, "winStreak");
+        PlayerData.get(p.getUniqueId()).setStat(0, minigame.getMinigameName(), "winStreak");
         if (!players.isEmpty()) {
             p.setGameMode(GameMode.SPECTATOR);
             p.teleport(players.get(0));
@@ -195,6 +197,8 @@ public class Game {
             Player p = players.remove(0);
             PlayerData.get(p.getUniqueId()).incrementStat("wins");
             PlayerData.get(p.getUniqueId()).incrementStat(minigame.getMinigameName(), "wins");
+            PlayerData.get(p.getUniqueId()).incrementStat("winStreak");
+            PlayerData.get(p.getUniqueId()).incrementStat(minigame.getMinigameName(), "winStreak");
         }
         MG.core().games.remove(this);
 
