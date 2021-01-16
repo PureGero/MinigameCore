@@ -91,7 +91,7 @@ public class TopCoins {
                 toplist.add(coins);
                 return coins;
             });
-            topCoins.coins = pd.money;
+            topCoins.coins = pd.getStat("coins_earnt");
         }
     }
 
