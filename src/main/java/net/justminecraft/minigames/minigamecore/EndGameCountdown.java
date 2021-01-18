@@ -16,6 +16,7 @@ public class EndGameCountdown implements Runnable {
     public void run() {
         if (countdown == 0) {
             game.finishGame();
+            return;
         }
 
         game.world.getPlayers().forEach(player -> TitleAPI.sendTitle(
