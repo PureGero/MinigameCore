@@ -177,31 +177,37 @@ public class Game {
     }
 
     public void postPlayerLeave(Player p) {
-        if (moneyPerDeath > 0)
+        if (moneyPerDeath > 0) {
             for (Player p2 : players) {
                 giveMoney(p2, moneyPerDeath);
             }
+        }
         if (isGameOver()) {
-            if (players.size() > 0) {
-                broadcast(getWinningTeamName() + ChatColor.GOLD + " has won!!!");
-                if (moneyPerWin > 0) {
-                    players.forEach(player -> giveMoney(player, moneyPerWin));
-                }
-            }
-            new EndGameCountdown(this);
+            finishGame();
         }
     }
 
     public final void finishGame() {
+        broadcast(getWinningTeamName() + ChatColor.GOLD + " has won!!!");
+        
         while (players.size() > 0) {
             Player p = players.remove(0);
             PlayerData.get(p.getUniqueId()).incrementStat("wins");
             PlayerData.get(p.getUniqueId()).incrementStat(minigame.getMinigameName(), "wins");
             PlayerData.get(p.getUniqueId()).incrementStat("winStreak");
             PlayerData.get(p.getUniqueId()).incrementStat(minigame.getMinigameName(), "winStreak");
+            if (moneyPerWin > 0) {
+                players.forEach(player -> giveMoney(player, moneyPerWin));
+            }
         }
+        
         MG.core().games.remove(this);
+        
+        new EndGameCountdown(this);
+        
+    }
 
+    public final void postFinishGame() {
         for (Player player : world.getPlayers()) {
             MG.resetPlayer(player);
             player.teleport(Bukkit.getWorlds().get(0).getSpawnLocation().add(Math.random(), 0, Math.random()));

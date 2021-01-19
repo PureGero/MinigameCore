@@ -15,7 +15,7 @@ public class EndGameCountdown implements Runnable {
     @Override
     public void run() {
         if (countdown == 0) {
-            game.finishGame();
+            game.postFinishGame();
             return;
         }
 
