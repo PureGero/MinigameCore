@@ -189,6 +189,8 @@ public class Game {
 
     public final void finishGame() {
         broadcast(getWinningTeamName() + ChatColor.GOLD + " has won!!!");
+
+        new EndGameCountdown(this, getWinningTeamName());
         
         while (players.size() > 0) {
             Player p = players.remove(0);
@@ -202,8 +204,6 @@ public class Game {
         }
         
         MG.core().games.remove(this);
-        
-        new EndGameCountdown(this);
         
     }
 

@@ -5,10 +5,12 @@ import org.bukkit.ChatColor;
 
 public class EndGameCountdown implements Runnable {
     private final Game game;
+    private final String winningTeamName;
     private int countdown = 10;
 
-    public EndGameCountdown(Game game) {
+    public EndGameCountdown(Game game, String winningTeamName) {
         this.game = game;
+        this.winningTeamName = winningTeamName;
         run();
     }
 
@@ -21,7 +23,7 @@ public class EndGameCountdown implements Runnable {
 
         game.world.getPlayers().forEach(player -> TitleAPI.sendTitle(
                 player, 0, countdown == 1 ? 20 : 30, 0,
-                ChatColor.GREEN + game.getWinningTeamName() + " won!",
+                ChatColor.GREEN + winningTeamName + " won!",
                 ChatColor.GOLD + "Returning to lobby in " + countdown + " seconds..."
         ));
 
