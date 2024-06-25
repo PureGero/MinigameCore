@@ -138,7 +138,7 @@ public class MinigameCore extends JavaPlugin {
 
         for (File file : new File(".").listFiles()) {
             if (file.getName().startsWith(mg.getMinigameName() + "-")) {
-                Game.deleteFiles(file);
+                Game.deleteWorld(file.getName());
             }
         }
 

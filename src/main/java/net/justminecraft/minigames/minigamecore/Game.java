@@ -215,7 +215,12 @@ public class Game {
 
         MG.core().getLogger().info("Unloading world " + world.getName() + " in 30 seconds...");
         Bukkit.getScheduler().runTaskLater(MG.core(), () -> Bukkit.unloadWorld(world, false), 30*20L);
-        Bukkit.getScheduler().runTaskLaterAsynchronously(MG.core(), () -> deleteFiles(new File(worldName)), 60*20L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(MG.core(), () -> deleteWorld(worldName), 60*20L);
+    }
+
+    public static void deleteWorld(String worldName) {
+        deleteFiles(new File(worldName));
+        deleteFiles(new File("plugins/WorldGuard/worlds", worldName));
     }
 
     public static void deleteFiles(File file) {
